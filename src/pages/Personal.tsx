@@ -1,8 +1,9 @@
-import { ArticleList, PageArticle } from "../components/Article";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { PageArticle } from "../components/Article";
 import { PageComment } from "../components/Comment";
 import { MemberInfoCard, MemberInfoUpdateForm } from "../components/Member";
-import Pagination from "../components/Pagination";
-import {CurrentPersonalPage, PersonalBar} from "../components/PersonalBar";
+import { CurrentPersonalPage, PersonalBar } from "../components/PersonalBar";
+import NotFound from "./NotFound";
 
 const articleList = [
     {
@@ -97,9 +98,13 @@ function Personal() {
                     <PersonalBar isPrivate={true} currPage={CurrentPersonalPage.Article} />
 
                     <div className="block">
-                        {/* <PageArticle articleList={articleList} totalPages={20} currPage={19} /> */}
-                        {/* <PageComment commentList={commentList} totalPages={3} currPage={1} showArticle={true} /> */}
-                        <MemberInfoUpdateForm member={info}/>
+                        <Routes>
+                            <Route path="/" element={<Navigate to="article" />} />
+                            <Route path="/article" element={<PageArticle articleList={articleList} totalPages={20} currPage={19} />} />
+                            <Route path="/comment" element={<PageComment commentList={commentList} totalPages={3} currPage={1} showArticle={true} />} />
+                            <Route path="/info" element={<MemberInfoUpdateForm member={info} />} />
+                            <Route path="*" element={<NotFound isSmall={true} />} />
+                        </Routes>
                     </div>
                 </div>
             </div>
