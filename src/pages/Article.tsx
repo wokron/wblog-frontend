@@ -48,7 +48,8 @@ function Article() {
             }
         }).then(response => {
             setCommentList(response.data);
-            setTotalPages(response.headers["x-total-count"])
+            const total: number = response.headers["x-total-count"];
+            setTotalPages(total / limit + 1);
         }).catch(err => {
             console.warn(err);
         });
