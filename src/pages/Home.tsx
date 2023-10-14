@@ -54,6 +54,17 @@ function Home() {
             console.warn(err);
         });
 
+        client.get("api/v1/comment", {
+            params: {
+                limit: 6,
+                skip: 0,
+            }
+        }).then(response => {
+            setRecentCommentList(response.data);
+        }).catch(err => {
+            console.warn(err);
+        });
+
     }, []);
 
     return (

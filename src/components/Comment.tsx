@@ -1,9 +1,10 @@
 import Pagination from "./Pagination"
 
 interface CommentProp {
-    person: { id: number | null, name: string },
+    member: { id: number | null, name: string },
+    commenter_name: string,
     article: { id: number, title: string },
-    datetime: string
+    create_time: string
     content: string
     like: number,
     dislike: number,
@@ -15,12 +16,12 @@ function CommentItem({ comment, showArticle }: { comment: CommentProp, showArtic
         <article className="media">
             <div className="media-content">
                 <h1 className="mb-2">
-                    <strong>{comment.person.name}</strong>
+                    <strong>{comment.member ? comment.member.name : comment.commenter_name}</strong>
                     {
                         showArticle ? (
                             <span> @ <a className="has-text-black has-text-weight-bold">{comment.article.title}</a></span>
                         ) : (
-                            <span> @ {comment.datetime}</span>
+                            <span> @ {comment.create_time}</span>
                         )
                     }
                 </h1>
