@@ -1,52 +1,60 @@
+import { useParams, useSearchParams } from "react-router-dom";
 import { ArticleContent } from "../components/Article";
-import { CommentForm, CommentList, PageComment } from "../components/Comment";
+import { CommentForm, PageComment } from "../components/Comment";
+import { useEffect, useState } from "react";
+import client from "../utils/client";
 
-
-const commentList = [
-    {
-        person: { id: 0, name: "ffererf" },
-        article: { id: 1, title: "植物是有认知能力的智能生物吗？" },
-        content: "猫猫！科学进步的关键啊",
-        datetime: "2023.12.31",
-        like: 10,
-        dislike: 1
-    },
-    {
-        person: { id: 0, name: "ffererf" },
-        article: { id: 1, title: "植物是有认知能力的智能生物吗？" },
-        content: "猫猫！科学进步的关键啊",
-        datetime: "2023.12.31",
-        like: 10,
-        dislike: 1
-    },
-    {
-        person: { id: 0, name: "ffererf" },
-        article: { id: 1, title: "植物是有认知能力的智能生物吗？" },
-        content: "猫猫！科学进步的关键啊",
-        datetime: "2023.12.31",
-        like: 10,
-        dislike: 1
-    }
-]
-
-const article = {
-    id: 1,
-    title: "植物是有认知能力的智能生物吗？",
-    category: {
-        id: 1,
-        name: "无厘头研究",
-    },
-    datetime: "2023.12.31",
-    description: "认为植物有意识可能超出了科学的范畴",
-    writer: {
-        id: 1,
-        name: "BAIL",
-    },
-    imgUrl: "https://bulma.io/images/placeholders/96x96.png",
-    content: "123"
-}
 
 function Article() {
+    const { id } = useParams();
+    const [totalPages, setTotalPages] = useState(1);
+    const [article, setArticle] = useState({
+        id: 0,
+        title: "Lorem ipsum dolor sit amet",
+        category: {
+            id: 1,
+            name: "consectetur",
+        },
+        datetime: "2023.12.31",
+        description: "Sit ipsam voluptatum suscipit rerum eveniet eum!",
+        writer: {
+            id: 0,
+            name: "Rem",
+        },
+        content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. " +
+            "Rem natus nobis nihil? Dolorem corporis reprehenderit temporibus animi labore, " +
+            "deserunt voluptas ullam, illum saepe repudiandae aliquam blanditiis cumque, officia minima dolor?"
+    });
+
+    const [commentList, setCommentList] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams({
+        "page": "1",
+    })
+
+    const limit: number = 20;
+    const currPage = Number(searchParams.get("page"));
+
+    useEffect(() => {
+        client.get(`/api/v1/article/${id}`).then(response => {
+            setArticle(response.data);
+        }).catch(err => {
+            console.warn(err);
+        });
+
+        client.get(`/api/v1/article/${id}/comment`, {
+            params: {
+                limit: limit,
+                skip: (currPage - 1) * limit
+            }
+        }).then(response => {
+            setCommentList(response.data);
+            setTotalPages(response.headers["x-total-count"])
+        }).catch(err => {
+            console.warn(err);
+        });
+
+    }, []);
+
     return (
         <section className="section pt-5">
             <div className="columns is-centered">
@@ -71,7 +79,7 @@ function Article() {
                                 <i className="fas fa-comments"></i>
                             </span> 全部评论：
                         </h1>
-                        <PageComment commentList={commentList} showArticle={false} currPage={2} totalPages={3} />
+                        <PageComment commentList={commentList} showArticle={false} currPage={currPage} totalPages={totalPages} />
                     </div>
                 </div>
             </div>
