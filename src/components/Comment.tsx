@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import Pagination from "./Pagination"
+import { toDateTimeFormat } from "../utils/time"
 
 interface CommentProp {
     member: { id: number, name: string } | null,
@@ -28,7 +29,7 @@ function CommentItem({ comment, showArticle }: { comment: CommentProp, showArtic
                         showArticle ? (
                             <span> @ <Link to={`/article/${comment.article.id}`} className="has-text-black has-text-weight-bold">{comment.article.title}</Link></span>
                         ) : (
-                            <span> @ {comment.create_time}</span>
+                            <span className="has-text-grey"> @ {toDateTimeFormat(comment.create_time)}</span>
                         )
                     }
                 </h1>

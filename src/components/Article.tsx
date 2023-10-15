@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import Pagination from "./Pagination"
+import { toDateTimeFormat } from "../utils/time"
 
 interface ArticleItemProp {
     id: number, title: string, description: string, create_time: string,
@@ -23,7 +24,7 @@ function ArticleItem({ article }: { article: ArticleItemProp }) {
                 <Link className="has-text-primary-dark has-text-weight-bold" to={`/search/?category_id=${article.category.id}`}>{article.category.name}</Link>
                 <h1 className="is-size-5"><Link to={`/article/${article.id}`} className="has-text-black has-text-weight-bold">{article.title}</Link>
                 </h1>
-                <p className="has-text-grey"><Link to={`/personal/${article.writer.id}`} className="has-text-grey has-text-weight-bold">{article.writer.name}</Link> @ <small>{article.create_time}</small>
+                <p className="has-text-grey"><Link to={`/personal/${article.writer.id}`} className="has-text-grey has-text-weight-bold">{article.writer.name}</Link> @ <small>{toDateTimeFormat(article.create_time)}</small>
                 </p>
                 <p className="is-size-6 has-text-grey-light">
                     {article.description}
@@ -65,7 +66,7 @@ interface ArticleContentProp {
 function ArticleContent({ article }: { article: ArticleContentProp }) {
     return (
         <>
-            <p><a className="has-text-weight-bold has-text-black">{article.writer.name}</a> @ {article.create_time}</p>
+            <p className="has-text-grey"><a className="has-text-grey has-text-weight-bold">{article.writer.name}</a> @ {toDateTimeFormat(article.create_time)}</p>
             <h1 className="title">{article.title}</h1>
             <h2 className="subtitle">{article.description}</h2>
             <div className="content">
