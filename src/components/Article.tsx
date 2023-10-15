@@ -57,7 +57,7 @@ function PageArticle({ articleList, currPage, totalPages }: { articleList: Artic
 }
 
 interface ArticleContentProp {
-    id: number, title: string, description: string, content: string, datetime: string,
+    id: number, title: string, description: string, content: string, create_time: string,
     category: { id: number, name: string },
     writer: { id: number, name: string }
 }
@@ -65,7 +65,7 @@ interface ArticleContentProp {
 function ArticleContent({ article }: { article: ArticleContentProp }) {
     return (
         <>
-            <p><a className="has-text-weight-bold has-text-black">{article.writer.name}</a> @ {article.datetime}</p>
+            <p><a className="has-text-weight-bold has-text-black">{article.writer.name}</a> @ {article.create_time}</p>
             <h1 className="title">{article.title}</h1>
             <h2 className="subtitle">{article.description}</h2>
             <div className="content">

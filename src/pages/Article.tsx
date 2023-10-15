@@ -15,7 +15,7 @@ function Article() {
             id: 1,
             name: "consectetur",
         },
-        datetime: "2023.12.31",
+        create_time: "2023.12.31",
         description: "Sit ipsam voluptatum suscipit rerum eveniet eum!",
         writer: {
             id: 0,
