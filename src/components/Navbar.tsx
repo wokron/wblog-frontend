@@ -1,4 +1,25 @@
-function Navbar({ hasLogin }: {hasLogin: boolean}) {
+import { useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+
+function Navbar({ hasLogin }: { hasLogin: boolean }) {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const keyWordsInQuery = searchParams.get("key_words") ? String(searchParams.get("key_words")) : "";
+    const [keyWords, setKeyWords] = useState(keyWordsInQuery);
+
+    function handleSearchClick() {
+        if (location.pathname == "/") {
+            navigate(`/search?key_words=${keyWords}`);
+        } else {
+            console.log({...searchParams});
+        }
+    }
+
+    function handleSearchInputChange(value: string) {
+        setKeyWords(value);
+    }
+
     return (
         <nav className="navbar is-fixed-top has-shadow is-transparent" role="navigation" aria-label="main navigation">
             <div className="container">
@@ -39,13 +60,13 @@ function Navbar({ hasLogin }: {hasLogin: boolean}) {
                         <div className="navbar-item pl-6">
                             <div className="field has-addons">
                                 <div className="control has-icons-left">
-                                    <input className="input is-small is-rounded is-primary" type="text" placeholder="搜索关键字" />
+                                    <input className="input is-small is-rounded is-primary" type="text" placeholder="搜索关键字" defaultValue={keyWordsInQuery} onChange={(e) => handleSearchInputChange(e.target.value)}/>
                                     <span className="icon is-small is-left">
                                         <i className="fas fa-search"></i>
                                     </span>
                                 </div>
                                 <div className="control">
-                                    <a className="button is-small is-rounded is-primary"><strong>Search</strong></a>
+                                    <a className="button is-small is-rounded is-primary" onClick={handleSearchClick}><strong>Search</strong></a>
                                 </div>
                             </div>
                         </div>

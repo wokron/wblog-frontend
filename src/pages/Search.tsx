@@ -10,13 +10,15 @@ import { useSearchParams } from "react-router-dom"
 function Search() {
     const [totalPages, setTotalPages] = useState(1);
     const [searchResult, setSearchResult] = useState([]);
-    const [categoryList, setCategoryList] = useState([]);
-    const [tagList, setTagList] = useState([]);
+    const [categoryList, setCategoryList] = useState<{ id: number, name: string }[]>([]);
+    const [tagList, setTagList] = useState<{ id: number, name: string }[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({
         "page": "1",
-    })
+    });
     const limit: number = 20;
     const currPage = Number(searchParams.get("page"));
+    const categoryId = Number(searchParams.get("category_id"));
+    const tagIds = searchParams.getAll("tag_ids").map(elm => Number(elm));
 
     useEffect(() => {
         client.get("api/v1/article", {
@@ -54,6 +56,26 @@ function Search() {
 
     }, []);
 
+    function handleCategoryClick(id: number) {
+        if (categoryId == id) {
+            searchParams.delete("category_id");
+            setSearchParams(searchParams);
+        } else {
+            searchParams.set("category_id", String(id));
+            setSearchParams(searchParams);
+        }
+    }
+
+    function handleTagClick(id: number) {
+        if (tagIds.includes(id)) {
+            searchParams.delete("tag_ids", String(id));
+            setSearchParams(searchParams);
+        } else {
+            searchParams.append("tag_ids", String(id));
+            setSearchParams(searchParams);
+        }
+    }
+
     return (
         <section className="section">
             <div className="columns is-centered">
@@ -62,14 +84,14 @@ function Search() {
                     <div className="block">
                         <h2 className="subtitle is-6"><span className="icon"><i className="fas fa-folder"></i></span> 分类：</h2>
                         <div className="buttons are-small">
-                            {categoryList.map(category => <Category category={category} isActive={false} />)}
+                            {categoryList.map(category => <Category category={category} isActive={category.id == categoryId} handleClick={handleCategoryClick} />)}
                         </div>
                     </div>
 
                     <div className="block">
                         <h2 className="subtitle is-6"><span className="icon"><i className="fas fa-tag"></i></span> 标签：</h2>
                         <div className="tags">
-                            {tagList.map(tag => <Tag tag={tag} isActive={false} />)}
+                            {tagList.map(tag => <Tag tag={tag} isActive={tagIds.includes(tag.id)} handleClick={handleTagClick} />)}
 
                         </div>
                     </div>

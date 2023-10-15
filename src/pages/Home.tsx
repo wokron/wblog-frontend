@@ -3,16 +3,17 @@ import { PageArticle } from "../components/Article";
 import Category from "../components/Category";
 import { CommentList } from "../components/Comment";
 import Tag from "../components/Tag";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import client from "../utils/client";
 
 
 function Home() {
+    const navigate = useNavigate();
     const [totalPages, setTotalPages] = useState(1);
     const [articleList, setArticleList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [tagList, setTagList] = useState([]);
-    const [recentCommentList, setRecentCommentList] = useState([]);  // todo: list recent comments
+    const [recentCommentList, setRecentCommentList] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams({
         "page": "1",
     })
@@ -67,6 +68,14 @@ function Home() {
 
     }, []);
 
+    function handleCategoryClick(id: number) {
+        navigate(`/search/?category_id=${id}`);
+    }
+
+    function handleTagClick(id: number) {
+        navigate(`/search/?tag_ids=${id}`);
+    }
+
     return (
         <section className="section">
             <div className="columns is-centered">
@@ -90,7 +99,7 @@ function Home() {
                             </span> 所有分类：
                         </h1>
                         <div className="buttons">
-                            {categoryList.map(category => <Category category={category} isActive={false} />)}
+                            {categoryList.map(category => <Category category={category} isActive={false} handleClick={handleCategoryClick} />)}
                         </div>
                     </div>
 
@@ -101,7 +110,7 @@ function Home() {
                             </span> 所有标签：
                         </h1>
                         <div className="tags">
-                            {tagList.map(tag => <Tag tag={tag} isActive={false} />)}
+                            {tagList.map(tag => <Tag tag={tag} isActive={false} handleClick={handleTagClick}/>)}
                         </div>
                     </div>
 
