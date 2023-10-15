@@ -11,23 +11,23 @@ function PersonalComment() {
     const [searchParams, setSearchParams] = useSearchParams({
         "page": "1",
     })
-    const [commentList, setCommentList] = useState([]);  // todo: get comment list api
+    const [commentList, setCommentList] = useState([]);
     const limit: number = 20;
     const currPage = Number(searchParams.get("page"));
 
     useEffect(() => {
-        // client.get("api/v1/comment/", {
-        //     params: {
-        //         limit: limit,
-        //         skip: (currPage - 1) * limit,
-        //         writer_id: id,
-        //     }
-        // }).then(response => {
-        //     setCommentList(response.data);
-        //     setTotalPages(response.headers["x-total-count"])
-        // }).catch(err => {
-        //     console.warn(err);
-        // });
+        client.get("api/v1/comment/", {
+            params: {
+                limit: limit,
+                skip: (currPage - 1) * limit,
+                member_id: id,
+            }
+        }).then(response => {
+            setCommentList(response.data);
+            setTotalPages(response.headers["x-total-count"])
+        }).catch(err => {
+            console.warn(err);
+        });
     }, []);
 
     return (
