@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom"
 import Pagination from "./Pagination"
 
 interface ArticleItemProp {
-    id: number, title: string, description: string, datetime: string,
+    id: number, title: string, description: string, create_time: string,
     imgUrl: string,
     category: { id: number, name: string },
     writer: { id: number, name: string }
@@ -19,11 +20,10 @@ function ArticleItem({ article }: { article: ArticleItemProp }) {
                 </figure>
             </div>
             <div className="media-content">
-                <strong className="has-text-primary-dark">{article.category.name}</strong>
-                <h1 className="is-size-5"><a className="has-text-black has-text-weight-bold">{article.title}</a>
+                <Link className="has-text-primary-dark has-text-weight-bold" to={`/search/?category_id=${article.category.id}`}>{article.category.name}</Link>
+                <h1 className="is-size-5"><Link to={`/article/${article.id}`} className="has-text-black has-text-weight-bold">{article.title}</Link>
                 </h1>
-                <p className="has-text-grey"><strong><a className="has-text-grey">{article.writer.name}</a></strong> @
-                    <small>{article.datetime}</small>
+                <p className="has-text-grey"><Link to={`/personal/${article.writer.id}`} className="has-text-grey has-text-weight-bold">{article.writer.name}</Link> @ <small>{article.create_time}</small>
                 </p>
                 <p className="is-size-6 has-text-grey-light">
                     {article.description}
@@ -42,7 +42,7 @@ function ArticleList({ articleList }: { articleList: ArticleItemProp[] }) {
     )
 }
 
-function PageArticle({ articleList, currPage, totalPages }: { articleList: ArticleItemProp[], currPage: number, totalPages: number }) {
+function PageArticle({ articleList, currPage, totalPages, handleChangePage }: { articleList: ArticleItemProp[], currPage: number, totalPages: number, handleChangePage: Function }) {
     return (
         <>
             <div className="block">
@@ -50,7 +50,7 @@ function PageArticle({ articleList, currPage, totalPages }: { articleList: Artic
             </div>
 
             <div className="block mt-6">
-                <Pagination totalPages={totalPages} currPage={currPage} />
+                <Pagination totalPages={totalPages} currPage={currPage} handleChangePage={handleChangePage}/>
             </div>
         </>
     )

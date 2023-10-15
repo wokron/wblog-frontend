@@ -31,8 +31,13 @@ function PersonalArticle() {
         });
     }, []);
 
+    function handleChangePage(targetPage: number) {
+        searchParams.set("page", String(targetPage));
+        setSearchParams(searchParams);
+    }
+
     return (
-        <PageArticle articleList={articleList} totalPages={totalPages} currPage={currPage} />
+        <PageArticle articleList={articleList} totalPages={totalPages} currPage={currPage} handleChangePage={handleChangePage}/>
     )
 }
 

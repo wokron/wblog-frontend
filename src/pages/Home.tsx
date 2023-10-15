@@ -76,6 +76,11 @@ function Home() {
         navigate(`/search/?tag_ids=${id}`);
     }
 
+    function handleChangePage(targetPage: number) {
+        searchParams.set("page", String(targetPage));
+        setSearchParams(searchParams);
+    }
+
     return (
         <section className="section">
             <div className="columns is-centered">
@@ -86,7 +91,7 @@ function Home() {
                                 <i className="fas fa-book"></i>
                             </span> 所有文章：
                         </h1>
-                        <PageArticle articleList={articleList} totalPages={totalPages} currPage={currPage} />
+                        <PageArticle articleList={articleList} totalPages={totalPages} currPage={currPage} handleChangePage={handleChangePage}/>
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 function Navbar({ hasLogin }: { hasLogin: boolean }) {
     const location = useLocation();
@@ -38,18 +38,18 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
 
                 <div className="navbar-menu">
                     <div className="navbar-start">
-                        <a className="navbar-item">
+                        <Link to="/" className="navbar-item">
                             <span className="icon"><i className="fas fa-home" aria-hidden="true"></i></span>
                             <strong>Home</strong>
-                        </a>
+                        </Link>
 
                         {
                             hasLogin &&
                             (
-                                <a className="navbar-item">
+                                <Link to="/personal/me" className="navbar-item">
                                     <span className="icon"><i className="fas fa-user" aria-hidden="true"></i></span>
                                     <strong>Personal</strong>
-                                </a>
+                                </Link>
                             )
                         }
 

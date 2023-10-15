@@ -56,6 +56,11 @@ function Article() {
 
     }, []);
 
+    function handleChangePage(targetPage: number) {
+        searchParams.set("page", String(targetPage));
+        setSearchParams(searchParams);
+    }
+
     return (
         <section className="section pt-5">
             <div className="columns is-centered">
@@ -80,7 +85,7 @@ function Article() {
                                 <i className="fas fa-comments"></i>
                             </span> 全部评论：
                         </h1>
-                        <PageComment commentList={commentList} showArticle={false} currPage={currPage} totalPages={totalPages} />
+                        <PageComment commentList={commentList} showArticle={false} currPage={currPage} totalPages={totalPages} handleChangePage={handleChangePage}/>
                     </div>
                 </div>
             </div>

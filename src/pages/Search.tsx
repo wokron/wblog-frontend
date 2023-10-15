@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
-import { ArticleList } from "../components/Article"
+import { PageArticle } from "../components/Article"
 import Category from "../components/Category"
-import Pagination from "../components/Pagination"
 import Tag from "../components/Tag"
 import client from "../utils/client"
 import { useSearchParams } from "react-router-dom"
@@ -76,6 +75,11 @@ function Search() {
         }
     }
 
+    function handleChangePage(targetPage: number) {
+        searchParams.set("page", String(targetPage));
+        setSearchParams(searchParams);
+    }
+
     return (
         <section className="section">
             <div className="columns is-centered">
@@ -134,14 +138,7 @@ function Search() {
                     </nav>
 
                     <div className="block">
-                        <div className="block">
-                            <ArticleList articleList={searchResult} />
-                        </div>
-
-                        <div className="block mt-6">
-                            <Pagination totalPages={totalPages} currPage={currPage} />
-                        </div>
-
+                        <PageArticle articleList={searchResult} totalPages={totalPages} currPage={currPage} handleChangePage={handleChangePage}/>
                     </div>
 
                 </div>

@@ -1,5 +1,4 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { PageArticle } from "../components/Article";
 import { PageComment } from "../components/Comment";
 import { useEffect, useState } from "react";
 import client from "../utils/client";
@@ -30,8 +29,13 @@ function PersonalComment() {
         });
     }, []);
 
+    function handleChangePage(targetPage: number) {
+        searchParams.set("page", String(targetPage));
+        setSearchParams(searchParams);
+    }
+
     return (
-        <PageComment commentList={commentList} totalPages={totalPages} currPage={currPage} showArticle={true} />
+        <PageComment commentList={commentList} totalPages={totalPages} currPage={currPage} showArticle={true} handleChangePage={handleChangePage}/>
     )
 }
 

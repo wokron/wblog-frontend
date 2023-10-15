@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom"
 import Pagination from "./Pagination"
 
 interface CommentProp {
-    member: { id: number | null, name: string },
+    member: { id: number, name: string } | null,
     commenter_name: string,
     article: { id: number, title: string },
     create_time: string
@@ -16,10 +17,16 @@ function CommentItem({ comment, showArticle }: { comment: CommentProp, showArtic
         <article className="media">
             <div className="media-content">
                 <h1 className="mb-2">
-                    <strong>{comment.member ? comment.member.name : comment.commenter_name}</strong>
+                    {
+                        comment.member ? (
+                            <Link to={`/personal/${comment.member.id}`} className="has-text-black has-text-weight-bold">{comment.member.name}</Link>
+                        ) : (
+                            <span className="has-text-black has-text-weight-bold">{comment.commenter_name}</span>
+                        )
+                    }
                     {
                         showArticle ? (
-                            <span> @ <a className="has-text-black has-text-weight-bold">{comment.article.title}</a></span>
+                            <span> @ <Link to={`/article/${comment.article.id}`} className="has-text-black has-text-weight-bold">{comment.article.title}</Link></span>
                         ) : (
                             <span> @ {comment.create_time}</span>
                         )
@@ -51,7 +58,7 @@ function CommentList({ commentList, showArticle }: { commentList: CommentProp[],
 }
 
 
-function PageComment({ commentList, showArticle, currPage, totalPages }: { commentList: CommentProp[], showArticle: boolean, currPage: number, totalPages: number }) {
+function PageComment({ commentList, showArticle, currPage, totalPages, handleChangePage }: { commentList: CommentProp[], showArticle: boolean, currPage: number, totalPages: number, handleChangePage: Function }) {
     return (
         <>
             <div className="block">
@@ -59,7 +66,7 @@ function PageComment({ commentList, showArticle, currPage, totalPages }: { comme
             </div>
 
             <div className="block mt-6">
-                <Pagination totalPages={totalPages} currPage={currPage} />
+                <Pagination totalPages={totalPages} currPage={currPage} handleChangePage={handleChangePage} />
             </div>
         </>
     )
