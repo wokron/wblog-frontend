@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import Pagination from "./Pagination"
 import { toDateTimeFormat } from "../utils/time"
+import Markdown from "react-markdown"
 
 interface ArticleItemProp {
     id: number, title: string, description: string, create_time: string,
@@ -70,7 +71,9 @@ function ArticleContent({ article }: { article: ArticleContentProp }) {
             <h1 className="title">{article.title}</h1>
             <h2 className="subtitle">{article.description}</h2>
             <div className="content">
-                {article.content}
+                <Markdown>
+                    {article.content}
+                </Markdown>
             </div>
         </>
     )
