@@ -16,7 +16,7 @@ function Index() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/article/:id" element={<Article />} />
                 <Route path="/personal/:id/*" element={<Personal />} />
-                <Route path="*" element={<NotFound isSmall={false}/>} />
+                <Route path="*" element={<NotFound isSmall={false} />} />
             </Routes>
             <Footer />
         </>
