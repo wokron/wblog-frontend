@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Login from "./Login";
+import Register from "./Register";
+
+enum NavModal{
+    NONE,
+    LOGIN,
+    REGISTER,
+}
 
 function Navbar({ hasLogin }: { hasLogin: boolean }) {
     const location = useLocation();
@@ -8,7 +15,7 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const keyWordsInQuery = searchParams.get("key_words") ? String(searchParams.get("key_words")) : "";
     const [keyWords, setKeyWords] = useState(keyWordsInQuery);
-    const [showLogin, setShowLogin] = useState(false);
+    const [currModal, setCurrModal] = useState(NavModal.NONE);
 
     function handleSearchClick() {
         if (location.pathname == "/") {
@@ -92,7 +99,7 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
                                     hasLogin ? (
                                         <div className="buttons">
 
-                                            <a className="button is-primary">
+                                            <a className="button is-primary" onClick={() => setCurrModal(NavModal.REGISTER)}>
                                                 <span className="icon"><i className="fas fa-plus" aria-hidden="true"></i></span>
                                                 <strong>New Member</strong>
                                             </a>
@@ -103,7 +110,7 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
                                             </a>
                                         </div>
                                     ) : (
-                                        <a className="button is-primary" onClick={() => setShowLogin(true)}>
+                                        <a className="button is-primary" onClick={() => setCurrModal(NavModal.LOGIN)}>
                                             <span className="icon"><i className="fas fa-right-to-bracket" aria-hidden="true"></i></span>
                                             <strong>Log in</strong>
                                         </a>
@@ -114,8 +121,9 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
                     </div>
                 </div>
             </nav>
-            <div className={showLogin ? "modal is-active" : "modal"}>
-                <div className="modal-background" onClick={() => setShowLogin(false)}></div>
+
+            <div className={currModal == NavModal.LOGIN ? "modal is-active" : "modal"}>
+                <div className="modal-background" onClick={() => setCurrModal(NavModal.NONE)}></div>
                 <div className="modal-content">
                     <div className="box">
                         <p className="has-text-centered">
@@ -123,6 +131,20 @@ function Navbar({ hasLogin }: { hasLogin: boolean }) {
                         </p>
                         <p>
                             <Login />
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div className={currModal == NavModal.REGISTER ? "modal is-active" : "modal"}>
+                <div className="modal-background" onClick={() => setCurrModal(NavModal.NONE)}></div>
+                <div className="modal-content">
+                    <div className="box">
+                        <p className="has-text-centered">
+                            <h1 className="title">Add New Member</h1>
+                        </p>
+                        <p>
+                            <Register />
                         </p>
                     </div>
                 </div>

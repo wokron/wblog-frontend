@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 function Index() {
     return (
         <>
-            <Navbar hasLogin={false} />
+            <Navbar hasLogin={true} />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
